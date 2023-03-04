@@ -1,0 +1,19 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<changeSet logicalFilePath="db/changelog/revision/vehicle_dml.xml" author="MAIRA" id="vehicle_dml">
+		<insert tableName="vehicles">
+			<column name="vehicle_id" value="e8d6cede-e3dc-47c9-a61d-429f316c35cf" />
+			<column name="vehicle_customer_owner" value="John Doe" />
+			<column name="telemetry_profile" value="Profile" />
+			<column name="current_driver" value="Jane Doe" />
+			<column name="number_plate" value="NumberPlate" />
+			<column name="vin" value="Vin" />
+			<column name="color" value="Color" />
+		</insert>
+	</changeSet>
+
+</databaseChangeLog>

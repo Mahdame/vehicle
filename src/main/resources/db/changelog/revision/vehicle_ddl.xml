@@ -1,0 +1,50 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!-- ******************************** -->
+    <!-- *** BEGIN TABLE DECLARATIONS *** -->
+    <!-- ******************************** -->
+
+    <changeSet
+            logicalFilePath="db/changelog/revision/vehicle_ddl.xml"
+            author="MAIRA"
+            id="vehicle_ddl">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="vehicles"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="vehicles">
+            <column name="vehicle_id" type="UUID">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="vehicle_id_pk"/>
+            </column>
+            <column name="vehicle_customer_owner" type="VARCHAR(255 BYTE)">
+            </column>
+            <column name="telemetry_profile" type="VARCHAR(255 BYTE)">
+            </column>
+            <column name="current_driver" type="VARCHAR(255 BYTE)">
+            </column>
+            <column name="number_plate" type="VARCHAR(255 BYTE)">
+            </column>
+            <column name="vin" type="VARCHAR(255 BYTE)">
+            </column>
+            <column name="color" type="VARCHAR(255 BYTE)">
+            </column>
+
+        </createTable>
+
+        <rollback/>
+
+    </changeSet>
+
+    <!-- ******************************** -->
+    <!-- *** END TABLE DECLARATIONS *** -->
+    <!-- ******************************** -->
+
+</databaseChangeLog>

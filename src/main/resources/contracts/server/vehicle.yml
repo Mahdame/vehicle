@@ -1,0 +1,383 @@
+openapi: 3.0.3
+
+info:
+  title: Vehicle
+  description: Vehicle tracking
+  version: 1.0.0
+
+tags:
+  - name: Vehicle
+    description: Vehicle definition
+
+servers:
+  - url: http://localhost:8080/tracking
+    description: Localhost
+
+paths:
+  /vehicles:
+    post:
+      tags:
+        - Vehicle
+      summary: Create new Vehicle
+      description: This operation is used to create a new Vehicle
+      operationId: postVehicle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostVehicleRequest"
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostVehicleResponse"
+        400:
+          description: Parameters missing in request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Unexpected errors not mapped to status codes mentioned above
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    get:
+      tags:
+        - Vehicle
+      summary: Get All Vehicles
+      description: This operation is used to retrieve a list of Vehicles.
+      operationId: getAll
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListVehiclesResponse"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Unexpected errors not mapped to status codes mentioned above
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /vehicles/{vehicleId}:
+    get:
+      tags:
+        - Vehicle
+      summary: Get a single Vehicle's info
+      description: Get a vehicle info by id.
+      operationId: getVehicle
+      parameters:
+        - name: vehicleId
+          in: path
+          schema:
+            $ref: "#/components/schemas/UUID"
+          required: true
+          description: Unique identifier of the Vehicle in the database
+          example: 0af401df-7d7a-1f36-817d-7b0a058d0003
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetVehicleResponse"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        404:
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Unexpected errors not mapped to status codes mentioned above
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      tags:
+        - Vehicle
+      summary: Update Vehicle's attributes
+      description: This operation is used to update some of the Vehicle's attributes.
+      operationId: putVehicle
+      parameters:
+        - name: vehicleId
+          in: path
+          schema:
+            $ref: "#/components/schemas/UUID"
+          required: true
+          description: Unique identifier of the Vehicle in the database
+          example: 0af401df-7d7a-1f36-817d-7b0a058d0003
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutVehicleRequest"
+        required: true
+      responses:
+        204:
+          description: No Content
+        400:
+          description: Parameters missing in request or request is malformed. For example, the mail is not in the correct format.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        404:
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        409:
+          description: There is already a Vehicle registered with same name or email
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Unexpected errors not mapped to status codes mentioned above
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      tags:
+        - Vehicle
+      summary: Delete Vehicle
+      description: This operation is delete a Vehicle.
+      operationId: deleteVehicle
+      parameters:
+        - name: vehicleId
+          in: path
+          schema:
+            $ref: "#/components/schemas/UUID"
+          required: true
+          description: Unique identifier of the Vehicle in the database
+          example: 0af401df-7d7a-1f36-817d-7b0a058d0003
+      responses:
+        204:
+          description: No Content
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        404:
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: Unexpected errors not mapped to status codes mentioned above
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+# ======= DTOs =======
+
+components:
+  schemas:
+    GetVehicleResponse:
+      type: object
+      properties:
+        vehicleId:
+          description: unique identifier of the Vehicle in the database
+          $ref: "#/components/schemas/UUID"
+        vehicle_customer_owner:
+          type: string
+          description: Vehicle Customer Owner
+          example: John Doe
+        current_driver:
+          type: string
+          description: Current Driver
+          example: Jane Doe
+        number_plate:
+          type: string
+          description: Number Plate
+          example: ADBC-123
+        vin:
+          type: string
+          description: Vehicle Identification Number
+          example: Sei la
+        color:
+          type: string
+          description: Color
+          example: Blue
+
+    PostVehicleRequest:
+      type: object
+      properties:
+        vehicleId:
+          description: unique identifier of the Vehicle in the database
+          $ref: "#/components/schemas/UUID"
+        vehicle_customer_owner:
+          type: string
+          description: Vehicle Customer Owner
+          example: John Doe
+        current_driver:
+          type: string
+          description: Current Driver
+          example: Jane Doe
+        number_plate:
+          type: string
+          description: Number Plate
+          example: ADBC-123
+        vin:
+          type: string
+          description: Vehicle Identification Number
+          example: Sei la
+        color:
+          type: string
+          description: Color
+          example: Blue
+
+    PostVehicleResponse:
+      type: object
+      properties:
+        vehicleId:
+          description: unique identifier of the Vehicle in the database
+          $ref: "#/components/schemas/UUID"
+      required: [vehicleId]
+
+    ListVehiclesResponse:
+      type: object
+      description: generic paged response
+      properties:
+        content:
+          type: array
+          description: list of paged items
+          items:
+            $ref: "#/components/schemas/GetVehicleResponse"
+        totalResults:
+          type: integer
+          format: int64
+          description: total number of records
+          example: 50
+      required: [content, totalResults]
+
+    PutVehicleRequest:
+      type: object
+      properties:
+        vehicleId:
+          description: unique identifier of the Vehicle in the database
+          $ref: "#/components/schemas/UUID"
+        vehicle_customer_owner:
+          type: string
+          description: Vehicle Customer Owner
+          example: John Doe
+        current_driver:
+          type: string
+          description: Current Driver
+          example: Jane Doe
+        number_plate:
+          type: string
+          description: Number Plate
+          example: ADBC-123
+        vin:
+          type: string
+          description: Vehicle Identification Number
+          example: Sei la
+        color:
+          type: string
+          description: Color
+          example: Blue
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Application error code
+          example: XYZ0001
+        type:
+          $ref: "#/components/schemas/ErrorTypeEnum"
+          description: Whether it is a technical or functional error
+        message:
+          type: string
+          description: Short error explanation
+          example: Unauthorized
+        details:
+          type: string
+          description: Short error detail
+          example: Parameter X has invalid value
+      required: [errorCode, errorType, errorMessage]
+
+    ErrorTypeEnum:
+      description: Error Type
+      type: string
+      enum:
+        - PERSISTENCE
+        - BUSINESS
+        - COMMUNICATION
+        - UNKNOWN
+
+    UUID:
+      type: string
+      pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+      example: 0af401df-7d7a-1f36-817d-7b0a058d0003
