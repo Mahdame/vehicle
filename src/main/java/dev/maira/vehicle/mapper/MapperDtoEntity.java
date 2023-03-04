@@ -37,4 +37,13 @@ public interface MapperDtoEntity {
 
     @Mapping(source = "id", target = "vehicleId", qualifiedByName = "ConvertUUIDToString")
     GetVehicleResponseDto mapEntityToDto(Vehicle entity);
+
+    @Mapping(source = "id", target = "vehicleId", qualifiedByName = "ConvertUUIDToString")
+    PostVehicleResponseDto mapEntityToPostResponseDto(Vehicle vehicle);
+
+    @Mapping(target = "id", ignore = true)
+    Vehicle mapDtoToPostEntity(PostVehicleRequestDto dto);
+
+    @Mapping(target = "id", ignore = true)
+    Vehicle mapDtoToPutEntity(PutVehicleRequestDto dto);
 }
